@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # 1. LA BASE DE DATOS
+  db:
+    image: mysql:8.0
+    container_name: BD_asistencias
+    environment:
+      MYSQL_DATABASE: asistencia
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "4003:3306"
+    volumes:
+      # Esto lee tu carpeta y ejecuta el archivo .sql automáticamente
+      - ./base-de-datos:/docker-entrypoint-initdb.d
+    restart: always
+
+  # 2. EL BACKEND
+  backend:
+    build: ./backend
+    container_name: backend-asistencia
+    ports:
+      - "3503:8080"
+    environment:
+      # Aquí forzamos a Java a conectarse al contenedor 'db' en vez de tu XAMPP
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:4003/asistencia?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+
+  # 3. EL FRONTEND
+  frontend:
+    build: ./frontend 
+    container_name: frontend-asistencia
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
