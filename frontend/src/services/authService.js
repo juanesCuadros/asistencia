@@ -1,6 +1,7 @@
 // src/services/authService.js
 
-const API_URL = 'http://localhost:3503/api/profesores/login';
+import { API_URL_PATH } from '../utils/consts';
+const API_URL = `${API_URL_PATH}profesores/login`;
 
 export const iniciarSesion = async (nombreUsuario, contrasena) => {
   try {

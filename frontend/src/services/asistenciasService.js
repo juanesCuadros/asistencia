@@ -1,6 +1,7 @@
 // src/services/asistenciaService.js
+import { API_URL_PATH } from '../utils/consts';
 
-const API_URL = 'http://localhost:3503/api/asistencias';
+const API_URL = `${API_URL_PATH}asistencias`;
 
 export const guardarAsistenciaLista = async (listaAsistencias) => {
   try {

@@ -1,6 +1,10 @@
 // src/services/estudianteService.js
 
-const API_URL = 'http://localhost:3503/api/estudiantes';
+import { API_URL_PATH } from '../utils/consts';
+const API_URL = `${API_URL_PATH}estudiantes`;
+console.log(API_URL);
+console.log(API_URL);
+console.log(API_URL);
 
 // 1. Traer la lista de estudiantes
 export const obtenerEstudiantes = async () => {
