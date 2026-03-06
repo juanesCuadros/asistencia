@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # 1. LA BASE DE DATOS
-  db:
+  db-asistencia:
     image: mysql:8.0
     container_name: BD_asistencias
     environment:
@@ -14,26 +14,49 @@ services:
       # Esto lee tu carpeta y ejecuta el archivo .sql automáticamente
       - ./base-de-datos:/docker-entrypoint-initdb.d
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal-asistencias
 
   # 2. EL BACKEND
-  backend:
+  backend-asistencia:
     build: ./backend
-    container_name: backend-asistencia
+    container_name: backend_asistencia
     ports:
       - "3503:8080"
     environment:
       # Aquí forzamos a Java a conectarse al contenedor 'db' en vez de tu XAMPP
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:4003/asistencia?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-asistencia:3306/asistencia?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+      - ./backend/src:/app/src
     depends_on:
-      - db
+      db-asistencia:
+        condition: service_healthy
+    networks:
+      - internal-asistencias
 
   # 3. EL FRONTEND
-  frontend:
+  frontend-asistencia:
     build: ./frontend 
-    container_name: frontend-asistencia
+    container_name: frontend_asistencia
     ports:
-      - "3000:3000"
+      - "3003:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      REACT_APP_API_URL_PATH: http://backend-asistencia:3503/api/
     depends_on:
-      - backend
+      - backend-asistencia
+    networks:
+      - internal-asistencias
+
+networks:
+  internal-asistencias:
+    driver: bridge
