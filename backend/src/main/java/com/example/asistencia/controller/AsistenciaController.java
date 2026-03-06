@@ -11,6 +11,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/asistencias")
+// @CrossOrigin(origins = "http://localhost:3003") // Permite solicitudes desde el puerto 3003 (Vite)
+@CrossOrigin(origins = "*") // Permite solicitudes desde el puerto 3003 (Vite)
+
 public class AsistenciaController {
 
   @Autowired

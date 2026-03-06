@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profesores")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*") // Permite solicitudes desde el puerto 3003 (Vite)
 public class ProfesorController {
 
   @Autowired

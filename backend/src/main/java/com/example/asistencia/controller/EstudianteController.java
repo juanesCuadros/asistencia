@@ -11,6 +11,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/estudiantes")
+@CrossOrigin(origins = "*") // Permite solicitudes desde el puerto 3003 (Vite)
+
 public class EstudianteController {
 
   @Autowired
