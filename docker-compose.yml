@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 1. LA BASE DE DATOS (Tu nuevo "XAMPP" en Docker)
+  db:
+    image: mysql:8.0 
+    container_name: bd_asistencia
+    restart: always
+    environment:
+      MYSQL_DATABASE: asistencia       # <-- Coincide con tu properties
+      MYSQL_USER: asistencia           # <-- Creamos tu usuario específico
+      MYSQL_PASSWORD: Asistencia123* # <-- Tu contraseña exacta
+      MYSQL_ROOT_PASSWORD: root        # (MySQL siempre pide una clave root por seguridad)
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. TU BACKEND (Spring Boot)
+  backend:
+    build: ./backend-asistencia # (Recuerda poner el nombre real de tu carpeta de Java aquí)
+    container_name: backend_asistencia
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      # Docker sobreescribirá tu application.properties mágicamente con esto:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/asistencia?createDatabaseIfNotExist=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: asistencia
+      SPRING_DATASOURCE_PASSWORD: Asistencia123*
+
+  # 3. TU FRONTEND (React)
+  frontend:
+    build: ./front-asistencia # (Recuerda poner el nombre real de tu carpeta de React aquí)
+    container_name: frontend_asistencia
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
