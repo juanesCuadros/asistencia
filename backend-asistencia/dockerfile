@@ -5,7 +5,7 @@ WORKDIR /app
 # Copiamos las instrucciones de dependencias
 COPY pom.xml .
 # Copiamos tu código fuente (donde está AsistenciaApplication.java)
-COPY src ./src
+COPY src src
 
 # Le ordenamos a Docker que fabrique el archivo .jar internamente
 RUN mvn clean package -DskipTests

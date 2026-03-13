@@ -1,6 +1,7 @@
 // src/services/authService.js
 
-const API_URL = 'http://localhost:8080/api/profesores/login';
+// TODO: Quitar http://localhost:8080..
+const API_URL = '/api/profesores/login';
 
 export const iniciarSesion = async (nombreUsuario, contrasena) => {
   try {

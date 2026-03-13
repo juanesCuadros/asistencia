@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/asistencias")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3003", "https://ele5-3.apolobyte.top"}) 
 public class AsistenciaController {
 
   @Autowired

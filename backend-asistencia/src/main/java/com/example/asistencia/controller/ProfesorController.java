@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profesores")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3003", "https://ele5-3.apolobyte.top"})
 public class ProfesorController {
 
   @Autowired

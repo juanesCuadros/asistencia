@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Definimos la URL base de tu backend para no repetirla
-const API_URL = 'http://localhost:8080/api/clases'; 
+const API_URL = '/api/clases'; 
 
 // Función para obtener las clases
 export const obtenerClases = async () => {

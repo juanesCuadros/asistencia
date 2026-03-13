@@ -1,6 +1,6 @@
 // src/services/estudianteService.js
 
-const API_URL = 'http://localhost:8080/api/estudiantes';
+const API_URL = '/api/estudiantes';
 
 // 1. Traer la lista de estudiantes
 export const obtenerEstudiantes = async () => {

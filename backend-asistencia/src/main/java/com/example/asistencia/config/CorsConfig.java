@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**") // Permite CORS en todas las rutas de tu API
-      .allowedOrigins("http://localhost:5173") // El puerto por defecto de Vite (React)
+      .allowedOrigins("http://localhost:3003", "https://ele5-3.apolobyte.top/") // El puerto por defecto de Vite (React)
       .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
       .allowedHeaders("*")
       .allowCredentials(true);
