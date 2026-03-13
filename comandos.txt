@@ -1,0 +1,5 @@
+ cd equipo-3-asistencias/brayan-castro/
+ docker compose down
+ docker compose up --build -d
+ docker compose up --build -d backend-asistencia
+ history > comandos.txt
