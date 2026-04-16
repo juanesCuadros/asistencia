@@ -32,7 +32,7 @@ export const crearEstudiante = async (datosEstudiante) => {
   }
 };
 
-const CLASES_API_URL = 'http://localhost:8080/api/clases';
+const CLASES_API_URL = '/api/clases';
 // 3. Traer SOLO los estudiantes de una clase específica
 export const obtenerEstudiantesPorClase = async (idClase) => {
   try {
@@ -52,7 +52,7 @@ export const obtenerEstudiantesPorClase = async (idClase) => {
 
 export const matricularEstudianteEnClase = async (idClase, idEstudiante) => {
   try {
-    const respuesta = await fetch(`http://localhost:8080/api/clases/${idClase}/estudiantes/${idEstudiante}`, {
+    const respuesta = await fetch(`/api/clases/${idClase}/estudiantes/${idEstudiante}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

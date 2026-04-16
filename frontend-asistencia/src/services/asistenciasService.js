@@ -24,7 +24,7 @@ export const guardarAsistenciaLista = async (listaAsistencias) => {
 /*
 export const obtenerAsistenciasPorClaseYFecha = async (idClase, fecha) => {
   try {
-    const respuesta = await fetch(`http://localhost:8080/api/asistencias/clase/${idClase}/fecha/${fecha}`);
+    const respuesta = await fetch(`/api/asistencias/clase/${idClase}/fecha/${fecha}`);
     
     // Si no hay asistencias ese día (ej. da error 404 o similar), devolvemos un arreglo vacío
     if (!respuesta.ok) return []; 

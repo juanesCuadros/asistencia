@@ -4,7 +4,7 @@ services:
   # 1. LA BASE DE DATOS (Tu nuevo "XAMPP" en Docker)
   db-asistencia:
     image: mysql:8.0 
-    container_name: bd_asistencia
+    container_name: bd_asistenciaDev
     restart: always
     environment:
       MYSQL_DATABASE: asistencia       # <-- Coincide con tu properties
@@ -29,7 +29,7 @@ services:
     depends_on:
       db-asistencia:
         condition: service_healthy
-    container_name: backend_asistencia
+    container_name: backend_asistenciaDev
     expose:
       - "8080"
     environment:
@@ -45,7 +45,7 @@ services:
   frontend-asistencia:
     build: ./frontend-asistencia # (Recuerda poner el nombre real de tu carpeta de React aquí)
     restart: unless-stopped
-    container_name: frontend_asistencia
+    container_name: frontend_asistenciaDev
     ports:
       - "3008:80"
     volumes:
