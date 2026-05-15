@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/estudiantes")
-@CrossOrigin(origins = {"http://localhost:3003", "https://ele5-3.apolobyte.top"})
+@CrossOrigin(origins = {"http://localhost:3003", "https://ele5-3.apolobyte.top", "http://localhost:3008"})
 public class EstudianteController {
 
   @Autowired

@@ -1,13 +1,255 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* =========================================
+   1. VARIABLES GLOBALES (Colores estandarizados)
+   ========================================= */
+/* src/index.css */
+:root {
+  
+  --primary-color: #4f46e5; 
+  --primary-hover: #4338ca;
+  --success: #10b981;
+  --success-hover: #059669;
+  --bg-color: #f3f4f6;
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #d1d5db;
+  --radius: 8px; 
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* =========================================
+   2. RESETEO BASE
+   ========================================= */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+}
+
+/* =========================================
+   3. ESTILOS DEL LOGIN (Tu diseño original)
+   ========================================= */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
+}
+
+.login-card {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.login-title {
+  color: var(--text-dark);
+  font-size: 24px;
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+
+.login-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-input {
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.login-btn {
+  background-color: var(--primary);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.login-btn:hover { background-color: var(--primary-hover); }
+.login-btn:active { transform: scale(0.98); }
+
+/* =========================================
+   4. ESTRUCTURA GLOBAL (Cursos y Estudiantes)
+   ========================================= */
+.pagina-fondo, .estudiantes-page {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+.cursos-container, .estudiantes-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.cursos-titulo, .titulo-pagina {
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Tarjetas blancas (Cards) */
+.card, .cursos-card, .tarjeta {
+  background-color: white;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+.card h3, .cursos-card h3 {
+  margin-top: 0;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+/* =========================================
+   5. FORMULARIOS E INPUTS GENÉRICOS
+   ========================================= */
+.form-crear-curso, .formulario-estudiante {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+input, .form-input, .input-form {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  flex: 1;
+  min-width: 200px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  border-color: var(--primary);
+}
+
+/* =========================================
+   6. BOTONES GLOBALES (Solución a botones en blanco)
+   ========================================= */
+button, .btn-guardar, .btn-primario {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+button:hover, .btn-guardar:hover, .btn-primario:hover {
+  background-color: var(--primary-hover);
+}
+
+button:disabled, .btn-primario:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Botones verdes (Ver estudiantes, asistencia) */
+.btn-ver-estudiantes, .btn-asistencia {
+  background-color: var(--success);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-ver-estudiantes:hover, .btn-asistencia:hover {
+  background-color: var(--success-hover);
+}
+
+/* Botones de acción en línea (Presente, Ausente) */
+.acciones-asistencia {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-inline {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-inline:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-inline:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+   7. TABLAS (Cursos y Estudiantes)
+   ========================================= */
+table, .tabla-cursos, .tabla-estudiantes {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th, .tabla-cursos th, .tabla-estudiantes th {
+  padding: 12px 15px;
+  background-color: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+td, .tabla-cursos td, .tabla-estudiantes td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e7eb;
+  color: var(--text-dark);
+}
+
+.mensaje-vacio {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
 }

@@ -1,125 +1,87 @@
-// src/pages/Cursos.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useCursos from '../hooks/useCursos';
 import Navbar from '../components/Navbar';
-import { obtenerClases, crearClase } from '../services/cursosService';
-import './Curso.css'; 
+import DataTable from '../components/DataTable';
+import Input from '../components/Input';
+import Button from '../components/Button';
+
 
 export default function Cursos() {
-  const [cursos, setClases] = useState([]);
-  const [nombre, setNombre] = useState('');
-
-  useEffect(() => {
-    cargarCursos();
-  }, []);
+  const { cursos, loading, agregarCurso } = useCursos();
+  const [nuevoNombre, setNuevoNombre] = useState('');
   const navigate = useNavigate();
 
-  const cargarCursos = async () => {
-    try {
-      const data = await obtenerClases();
-      // 👇 ¡Esta línea es la clave! Nos dirá qué llega realmente
-      console.log("Datos que llegaron del backend:", data); 
-      setClases(data);
-    } catch (error) {
-      console.error("Error al cargar los cursos", error);
-    }
-  };
-
-  const handleCrearCurso = async (e) => {
+  const handleGuardar = async (e) => {
     e.preventDefault();
-    if (!nombre.trim()) {
-      alert('Por favor ingresa el nombre de la clase');
-      return;
-    }
-
-    try {
-      const nuevoCurso = { 
-        nombre: nombre,
-        profesor: { idProfesor: 1 } 
-      };
-      
-      // 1. Guardamos y RECIBIMOS la clase confirmada por el backend
-      const claseGuardada = await crearClase(nuevoCurso);
-      
-      // 2. Limpiamos el input
-      setNombre(''); 
-      
-      // 3. ¡LA MAGIA! Agregamos la clase nueva a la lista que ya tenemos en pantalla
-      setClases([...cursos, claseGuardada]); 
-
-      alert('¡Clase creada con éxito!');
-
-    } catch (error) {
-      alert('Hubo un error al crear la clase');
-      console.error(error);
+    const resultado = await agregarCurso(nuevoNombre);
+    if (resultado.success) {
+      setNuevoNombre('');
+    } else {
+      alert("Error al crear la clase");
     }
   };
+
+  // Definimos las cabeceras de la tabla
+  const headers = ['ID', 'Nombre', 'Profesor',  'Acciones'];
+
+  // Definimos cómo se ve cada fila
+  const renderRow = (curso) => (
+    <>
+      <td style={{ padding: '12px' }}>{curso.idClase}</td>
+      <td style={{ padding: '12px' }}><strong>{curso.nombre}</strong></td>
+      <td style={{ padding: '12px' }}>
+        {curso.profesor ? `Profesor #${curso.profesor.idProfesor}` : 'Sin asignar'}
+      </td>
+      
+      <td style={{ padding: '12px' }}>
+        <Button 
+          style={{ backgroundColor: '#10b981', padding: '6px 12px', fontSize: '12px' }}
+          onClick={() => navigate(`/estudiantes/${curso.idClase}`)}
+        >
+          Ver Estudiantes
+        </Button>
+      </td>
+    </>
+  );
 
   return (
     <div className="pagina-fondo">
       <Navbar />
-      <div className="cursos-container">
-        <h2 className="cursos-titulo">Gestión de Clases 📚</h2>
+      <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+        <h2 style={{ color: 'var(--text-dark)' }}>Gestión de Clases 📚</h2>
 
-        {/* Formulario */}
-        <div className="cursos-card">
+        {/* Sección Crear */}
+        <div className="card" style={{ marginBottom: '20px' }}>
           <h3>Registrar Nueva Clase</h3>
-          <form onSubmit={handleCrearCurso} className="form-crear-curso">
-            <input 
-              type="text" 
-              placeholder="Nombre (Ej. Matemáticas 101)" 
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="form-input"
-            />
-            <button type="submit" className="btn-guardar">
-              Guardar Clase
-            </button>
+          <form onSubmit={handleGuardar} style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ flex: 1 }}>
+              <Input 
+                placeholder="Nombre (Ej. Matemáticas 101)" 
+                value={nuevoNombre}
+                onChange={(e) => setNuevoNombre(e.target.value)}
+                required
+              />
+            </div>
+            <div style={{ width: '200px' }}>
+              <Button type="submit">Guardar Clase</Button>
+            </div>
           </form>
         </div>
 
-        {/* Tabla */}
-        <div className="cursos-card">
+        {/* Sección Tabla */}
+        <div className="card">
           <h3>Mis Clases</h3>
-          <table className="tabla-cursos">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Profesor Asignado</th>
-                <th>Estudiantes Inscritos</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cursos.map((curso) => (
-                <tr key={curso.idClase}>
-                  <td>{curso.idClase}</td>
-                  <td><strong>{curso.nombre}</strong></td>
-                  {/* Validamos si trae el profesor para mostrar su ID o nombre */}
-                  <td>{curso.profesor ? `Profesor #${curso.profesor.idProfesor}` : 'Sin asignar'}</td>
-                  <td>{curso.estudiantes ? curso.estudiantes.length : 0}</td>
-                  <td>
-                    <button 
-                        className="btn-ver-estudiantes"
-                        onClick={() => navigate(`/estudiantes/${curso.idClase}`)}
-                      >
-                        Ver Estudiantes / Asistencia
-                      </button>
-                  </td>
-                </tr>
-              ))}
-              {cursos.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="mensaje-vacio">
-                    No hay clases registradas. ¡Crea la primera!
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          {loading ? (
+            <p>Cargando clases...</p>
+          ) : (
+            <DataTable 
+              headers={headers} 
+              data={cursos} 
+              renderRow={renderRow} 
+            />
+          )}
         </div>
-
       </div>
     </div>
   );
