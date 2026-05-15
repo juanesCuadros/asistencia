@@ -1,37 +1,6 @@
-// src/services/asistenciaService.js
+import api from './api';
 
-const API_URL = '/api/asistencias';
-
-export const guardarAsistenciaLista = async (listaAsistencias) => {
-  try {
-    const respuesta = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // Convertimos el arreglo de asistencias a JSON
-      body: JSON.stringify(listaAsistencias) 
-    });
-    
-    if (!respuesta.ok) throw new Error("Error al guardar la asistencia");
-    return await respuesta.json();
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+export const guardarAsistenciaLista = async (datosAsistencia) => {
+  const response = await api.post('/asistencias', datosAsistencia);
+  return response.data;
 };
-// src/services/asistenciasService.js
-/*
-export const obtenerAsistenciasPorClaseYFecha = async (idClase, fecha) => {
-  try {
-    const respuesta = await fetch(`/api/asistencias/clase/${idClase}/fecha/${fecha}`);
-    
-    // Si no hay asistencias ese día (ej. da error 404 o similar), devolvemos un arreglo vacío
-    if (!respuesta.ok) return []; 
-    
-    return await respuesta.json();
-  } catch (error) {
-    console.error("Error obteniendo asistencias:", error);
-    return [];
-  }
-};*/

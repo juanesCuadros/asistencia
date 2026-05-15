@@ -1,59 +1,46 @@
-// src/pages/Login.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { iniciarSesion } from '../services/authService'; // <-- Importamos tu servicio
-import './Login.css'; 
+import useAuth from '../hooks/useAuth';
+import Input from '../components/Input';
+import Button from '../components/Button';
+
 
 export default function Login() {
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
-  const [mensajeError, setMensajeError] = useState(''); // Para mostrar errores en pantalla
-  const navigate = useNavigate();
+  const { login, loading, error } = useAuth(); // <-- Toda la lógica viene de aquí
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setMensajeError(''); // Limpiamos errores previos
-
-    try {
-      // 1. Llamamos a tu backend enviando lo que el usuario escribió
-      const respuesta = await iniciarSesion(usuario, password);
-
-      // 2. Si el backend responde éxito, lo dejamos pasar
-      if (respuesta.mensaje === "Login exitoso") {
-        navigate('/cursos'); // O la ruta a la que quieras enviarlo
-      }
-    } catch (error) {
-      // 3. Si las credenciales son incorrectas, mostramos el error del backend
-      setMensajeError(error.message);
-    }
+    login(usuario, password);
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <h2 className="login-title">¡Bienvenido! 👋</h2>
-        <p className="login-subtitle">Ingresa a tu cuenta para tomar asistencia</p>
+    <div className="login-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
+        <h2>¡Bienvenido! 👋</h2>
+        <p>Ingresa a tu cuenta para tomar asistencia</p>
         
-        <form onSubmit={handleLogin} className="login-form">
-          <input 
+        <form onSubmit={handleSubmit}>
+          <Input 
             type="text" 
-            className="login-input"
             placeholder="Usuario" 
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
+            required
           />
-          <input 
+          <Input 
             type="password" 
-            className="login-input"
             placeholder="Contraseña" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           
-          {/* Si hay un error, lo mostramos aquí en rojo */}
-          {mensajeError && <p style={{color: 'red', fontSize: '14px', margin: '5px 0'}}>{mensajeError}</p>}
+          {error && <p style={{ color: 'var(--error-color)', fontSize: '14px' }}>{error}</p>}
 
-          <button type="submit" className="login-btn">Entrar</button>
+          <Button type="submit" className="login-btn">
+            Entrar
+          </Button>
         </form>
       </div>
     </div>
